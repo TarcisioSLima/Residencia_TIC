@@ -1,0 +1,90 @@
+
+
+----Tutorial "Inner Join"-----
+
+	Alunos
+id_aluno	nome	id_curso
+1		Ana	101
+2		Pedro	102
+3		Maria	103
+4		João	104
+
+
+	Cursos
+id_curso	curso
+101		Matemática
+102		Física
+103		Biologia
+
+
+SELECT Alunos.nome, Cursos.curso
+FROM Alunos
+INNER JOIN Cursos ON Alunos.id_curso = Cursos.id_curso;
+
+nome	curso
+Ana	Matemática
+Pedro	Física
+Maria	Biologia
+
+(porque o id do curso do joão n existe ele n foi listado)
+
+
+---------------------------------------
+	
+	----Tutorial UNION----
+
+---------------------------------------
+
+SELECT nome FROM AlunosTurmaA
+UNION ALL
+SELECT nome FROM AlunosTurmaB;
+
+faz com que os dados saiam todos juntos sem separação, removendo todas os dados repetidos (caso haja)
+
+para evitar que os dados repetidos sejam removidos basta utilizar "UNION ALL".
+
+--------
+
+Check
+
+ CREATE TABLE Clientes (
+ id INT AUTO_INCREMENT PRIMARY KEY,
+ nome VARCHAR(100) NOT NULL,
+ email VARCHAR(255) UNIQUE NOT NULL,
+ senha VARCHAR(100) NOT NULL,
+ data_nascimento DATE,
+ endereco VARCHAR(255),
+ cidade VARCHAR(100),
+ estado CHAR(2),
+ cep VARCHAR(10),
+ CONSTRAINT check_cidadex1 CHECK (YEAR(data_nascimento) = 1972)
+ )
+
+cria uma condição de preenchimento ou atualização
+
+-----
+
+avg
+
+AVG: A função AVG calcula a média aritmética de valores numéricos em um conjunto de dados. A função ignora
+ valores nulos e funciona apenas com números.
+
+
+SELECT departamento, AVG(salario) AS media_salario FROM Funcionarios
+ GROUP BY departamento;
+
+
+
+
+Para aplicar condições a grupos de registros em vez de aplicá-las a registros individuais, é utilizado a cláusula
+ HAVING
+ Exemplo: Selecionar os departamentos com média salarial maior que 5000
+ SELECT departamento, AVG(salario) AS media_salario
+ FROM Funcionarios GROUP BY departamento
+ HAVING AVG(salario) > 5000
+
+
+
+-------
+
+
