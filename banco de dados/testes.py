@@ -10,10 +10,24 @@ conexao.close()
 import mysql.connector
 
 conexao = mysql.connector.connect(
-host = "localhost",
-user = "root",
-password = "321",
-database = "db_testes"
+    host = "localhost",
+    user = "root",
+    password = "54321"
+)
+
+cursor = conexao.cursor()
+
+cursor.execute("CREATE DATABASE IF NOT EXISTS db_testes")
+
+conexao.commit()
+cursor.close()
+conexao.close()
+
+conexao = mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    password = "54321",
+    database = "db_testes"
 )
 
 cursor = conexao.cursor()
@@ -40,6 +54,8 @@ atributo_clie = [   "(",
 tabelas[0] += " ".join(atributo_func)
 tabelas[1] += " ".join(atributo_clie)
 
+
+
 for tabela in tabelas:
     cursor.execute(tabela)
 
@@ -49,7 +65,7 @@ conexao.close()
 
 '''
 para "simplificar", (porque não está nada simplificado kkkk)
-poderia também ser feito em uma matriz os atrbutos, dessa forma,
+poderia também ser feito em uma matriz os atributos, dessa forma,
 em um ambiente com muitas tabelas poderiam ser enseridos seus atributos a seus respectivos posição no for,
 mas, vou deixar assim mesmo porque é mais leigo e facil de interpretar.
 segue o exemplo do código em matrizes
