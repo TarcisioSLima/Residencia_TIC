@@ -87,4 +87,8 @@ Para aplicar condições a grupos de registros em vez de aplicá-las a registros
 
 -------
 
+TRUNCATE TABLE tb_cliente;
 
+deleta todos os dados e reseta o id.
+
+------
