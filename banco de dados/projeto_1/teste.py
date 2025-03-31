@@ -12,12 +12,6 @@ dia = {
     "7": "Sábado"
 }
 horario_m = {
-    "1": "07:10 - 08:00",
-    "2": "08:00 - 08:50",
-    "3": "08:50 - 09:40",
-    "4": "10:00 - 10:50",
-    "5": "10:50 - 11:40",
-    "6": "11:40 - 12:30",
     "12": "07:10 - 08:50",
     "23": "08:00 - 09:40",
     "34": "08:50 - 10:50",
@@ -25,12 +19,6 @@ horario_m = {
     "56": "10:50 - 12:30"
 }
 horario_v = {
-    "1": "13:10 - 14:00",
-    "2": "14:00 - 14:50",
-    "3": "14:50 - 15:40",
-    "4": "16:00 - 16:50",
-    "5": "16:50 - 17:40",
-    "6": "17:40 - 18:30",
     "12": "13:10 - 14:50",
     "23": "14:00 - 15:40",
     "34": "14:50 - 16:50",
@@ -38,11 +26,6 @@ horario_v = {
     "56": "16:50 - 18:30"
 }
 horario_n = {
-    "1": "18:05 - 18:50",
-    "2": "18:50 - 19:35",
-    "3": "19:35 - 20:20",
-    "4": "20:30 - 21:15",
-    "5": "21:15 - 22:00",
     "12": "18:05 - 19:35",
     "23": "18:50 - 20:20",
     "34": "19:35 - 21:15",
@@ -53,10 +36,22 @@ h_t = {
     "Noturno": horario_n,
     "Vespertino": horario_v
 }
+def esconde_diretorio():
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
 
 d_tratado = []
 t_tratado = []
 h_tratado = []
+
+esconde_diretorio()
 
 aulas = str(input("Digite o horário: "))
 programa = "active"
@@ -67,6 +62,7 @@ while programa != "erro":
     programa = dias
     i += 1
 i -= 1
+d_tratado.pop()
 
 tratamento_t = turno.get(aulas[i], "digitaram errado")
 t_tratado.append(tratamento_t)
@@ -74,11 +70,12 @@ t_tratado.append(tratamento_t)
 t_h_t = h_t.get(tratamento_t, "erro no horário turno")
 
 i+=1
-horario = t_h_t.get(aulas[i])
+horario = t_h_t.get(aulas[-2]+aulas[-1])
 h_tratado.append(horario)
 
-print(h_tratado)
-
+print("Turno: " + t_tratado[0] + ". ")
+print("Dias da Semana: " + " - ".join(d_tratado) + ". ")
+print("Horário: " + h_tratado[0])
 
 
 
