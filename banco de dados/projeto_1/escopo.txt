@@ -1,3 +1,13 @@
+
+ ___________________________________________________________________
+|                                                                   |
+|Esse "projeto" consiste em tratar o horário dos estudantes da UFG  |
+|disponibilizados no sigaa para uma forma mais visual e organizada. |
+|___________________________________________________________________|
+
+
+
+
 tabela de horário -
 
 matéria

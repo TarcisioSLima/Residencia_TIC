@@ -1,0 +1,37 @@
+    pip install x
+    pip uninstall x
+
+    Instalar uma versão específica de um pacote:
+        pip install nome_do_pacote==versao_desejada
+    
+    Atualizar um pacote:
+        pip install --upgrade nome_do_pacote
+    
+    Listar pacotes instalados:
+        pip list
+    
+    Criar um arquivo de requisitos:
+        pip freeze > requirements.txt
+    
+    Instalar pacotes a partir de um arquivo de requisitos:
+        pip install -r requirements.txt
+
+
+
+Bibliotecas mencionadas no vídeo:
+    math -> operações matemáticas mais avançadas (Raiz quadrada por exemplo)
+        maneira simples de nomear a raiz quadrada separada da biblioteca por inteira:
+             ______________________________________            
+            |from math import sqrt as raiz_quadrada|
+            
+            |print(raiz_quadrada(64))
+            |     saída: 8.0                       |
+
+    random -> números aleatórios
+    datetime -> trabalho com datas e horários
+
+
+condições em variaveis basta colocar na declaração da variável e retornará como V/F 
+    maior_idade = idade_user >= 18
+
+

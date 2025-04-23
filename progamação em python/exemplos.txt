@@ -1,0 +1,41 @@
+
+
+Conexão com sites com a biblioteca BeautifulSoup
+---------------------------------------------------------------------------------
+import requests
+from bs4 import BeautifulSoup
+
+def main():
+    url = 'https://www.python.org'
+    resposta = requests.get(url)
+
+    if resposta.status_code == 200:
+        # Cria o objeto BeautifulSoup
+        soup = BeautifulSoup(resposta.text, 'html.parser')
+
+        # Extrai o título da página
+        titulo = soup.title.string
+        print("Título da página:", titulo)
+
+        # Exemplo: pegar todos os links
+        print("\nAlguns links da página:")
+        for link in soup.find_all('a')[:5]:  # só os 5 primeiros
+            print(link.get('href'))
+
+if __name__ == '__main__':
+    main()
+
+---->
+    Saída:
+    ------>
+        Título da página: Welcome to Python.org
+
+        Alguns links da página:
+        /downloads/
+        /doc/
+        /community/
+        /about/
+        /success-stories/
+
+
+---------------------------------------------------------------------------------
