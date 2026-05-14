@@ -1,0 +1,49 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <mat-icon class="warning-icon">warning</mat-icon>
+    <h2 mat-dialog-title>Reenvio Forçado de Alertas</h2>
+  </div>
+
+  <mat-dialog-content>
+    <div *ngIf="parsedIds.length > 0; else massWarning" class="warning-box">
+      <p>Esta ação irá <strong>reenviar todos os alertas gerados hoje</strong> para os usuários informados abaixo.</p>
+      <p>Os destinatários receberão os alertas via <strong>e-mail e/ou WhatsApp</strong> novamente.</p>
+    </div>
+
+    <ng-template #massWarning>
+      <div class="danger-box">
+        <p><strong>Atenção: reenvio para toda a base!</strong></p>
+        <p>Nenhum ID informado — os alertas de hoje serão reenviados para <strong>todos os usuários cadastrados</strong> via e-mail e/ou WhatsApp.</p>
+        <p>Informe IDs abaixo caso queira restringir o reenvio.</p>
+      </div>
+    </ng-template>
+
+    <mat-form-field appearance="outline" class="ids-field">
+      <mat-label>IDs dos usuários (opcional — deixe vazio para toda a base)</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="userIdsRaw"
+        rows="6"
+        placeholder="ex: a1b2c3d4-e5f6-...&#10;f7g8h9i0-j1k2-..."
+      ></textarea>
+      <mat-hint>{{ parsedIds.length > 0 ? parsedIds.length + ' ID(s) reconhecido(s)' : 'Todos os usuários serão incluídos' }}</mat-hint>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <div class="bypass-checkbox">
+    <mat-checkbox [(ngModel)]="bypassPreferences" color="warn">
+      Ignorar preferências dos usuários (enviar para todos independente de configuração)
+    </mat-checkbox>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Cancelar</button>
+    <button
+      mat-flat-button
+      color="warn"
+      (click)="confirm()"
+    >
+      {{ parsedIds.length > 0 ? 'Confirmar Reenvio' : 'Confirmar Reenvio para Todos' }}
+    </button>
+  </mat-dialog-actions>
+</div>

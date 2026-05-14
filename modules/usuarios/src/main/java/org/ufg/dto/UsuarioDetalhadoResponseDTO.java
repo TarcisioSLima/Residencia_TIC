@@ -1,0 +1,140 @@
+package org.ufg.dto;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+public class UsuarioDetalhadoResponseDTO {
+
+    private UUID id;
+    private String nome;
+    private String email;
+    private String whatsapp;
+    private LocalDateTime dataCriacao;
+    private LocalDate dataUltimaEdicao;
+    private String nivelAcesso;
+    private UUID cidadeId;
+    private String cidadeNome;
+    private UUID eventoId;
+    private String eventoNome;
+    private BigDecimal valor;
+    private Boolean personalizavel;
+    private List<CanalResponseDTO> canaisPreferidos;
+
+    public UsuarioDetalhadoResponseDTO() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWhatsapp() {
+        return whatsapp;
+    }
+
+    public void setWhatsapp(String whatsapp) {
+        this.whatsapp = whatsapp;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDate getDataUltimaEdicao() {
+        return dataUltimaEdicao;
+    }
+
+    public void setDataUltimaEdicao(LocalDate dataUltimaEdicao) {
+        this.dataUltimaEdicao = dataUltimaEdicao;
+    }
+
+    public String getNivelAcesso() {
+        return nivelAcesso;
+    }
+
+    public void setNivelAcesso(String nivelAcesso) {
+        this.nivelAcesso = nivelAcesso;
+    }
+
+    public UUID getCidadeId() {
+        return cidadeId;
+    }
+
+    public void setCidadeId(UUID cidadeId) {
+        this.cidadeId = cidadeId;
+    }
+
+    public String getCidadeNome() {
+        return cidadeNome;
+    }
+
+    public void setCidadeNome(String cidadeNome) {
+        this.cidadeNome = cidadeNome;
+    }
+
+    public UUID getEventoId() {
+        return eventoId;
+    }
+
+    public void setEventoId(UUID eventoId) {
+        this.eventoId = eventoId;
+    }
+
+    public String getEventoNome() {
+        return eventoNome;
+    }
+
+    public void setEventoNome(String eventoNome) {
+        this.eventoNome = eventoNome;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public Boolean getPersonalizavel() {
+        return personalizavel;
+    }
+
+    public void setPersonalizavel(Boolean personalizavel) {
+        this.personalizavel = personalizavel;
+    }
+
+    public List<CanalResponseDTO> getCanaisPreferidos() {
+        return canaisPreferidos;
+    }
+
+    public void setCanaisPreferidos(List<CanalResponseDTO> canaisPreferidos) {
+        this.canaisPreferidos = canaisPreferidos;
+    }
+}

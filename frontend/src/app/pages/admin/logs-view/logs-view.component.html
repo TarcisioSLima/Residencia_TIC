@@ -1,0 +1,101 @@
+<div class="admin-shell">
+  <app-sidebar></app-sidebar>
+  <div class="admin-main">
+    <div class="admin-content">
+      <section class="page-intro">
+        <div class="intro-text">
+          <h1>Logs de Execução</h1>
+          <p>Monitore tarefas processadas com nivel de criticidade, mensagens e status em tempo real.</p>
+        </div>
+        <div class="intro-badge">
+          <span class="badge-label">Resultados</span>
+          <strong class="badge-value">{{ totalCount }}</strong>
+        </div>
+      </section>
+
+      <div class="table-card">
+        <div class="table-toolbar">
+          <span class="table-title">Logs de Execução</span>
+          <span class="table-subtitle">Rastreamento detalhado de execucao por tarefa e data.</span>
+        </div>
+        <div class="log-stats">
+          <div class="stat-item">
+            <span class="stat-value">{{ totalLogs }}</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat-item stat-info">
+            <span class="stat-value">{{ infoCount }}</span>
+            <span class="stat-label">Info</span>
+          </div>
+          <div class="stat-item stat-warn">
+            <span class="stat-value">{{ warnCount }}</span>
+            <span class="stat-label">Avisos</span>
+          </div>
+          <div class="stat-item stat-error">
+            <span class="stat-value">{{ errorCount }}</span>
+            <span class="stat-label">Erros</span>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="filter-form">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field filter-field--task">
+              <mat-label>Tarefa</mat-label>
+              <mat-select formControlName="task">
+                <mat-option *ngFor="let opt of taskOptions" [value]="opt.value">
+                  {{ opt.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+              <input matInput [matDatepicker]="pickerDate" formControlName="date" placeholder="Data">
+              <mat-datepicker-toggle matIconSuffix [for]="pickerDate"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDate></mat-datepicker>
+            </mat-form-field>
+            <div class="filter-actions">
+              <button type="submit" class="btn-primary">Filtrar</button>
+              <button type="button" class="btn-ghost" (click)="clearFilters()">Limpar</button>
+            </div>
+          </form>
+        </div>
+        <mat-table [dataSource]="dataSource" class="admin-table">
+          <ng-container matColumnDef="createdAt">
+            <mat-header-cell *matHeaderCellDef>Data/Hora</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.createdAt | date:'dd/MM HH:mm:ss' }}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="task">
+            <mat-header-cell *matHeaderCellDef>Tarefa</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.task }}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="level">
+            <mat-header-cell *matHeaderCellDef>Nível</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <span class="chip-base"
+                    [class.chip-success]="row.level === 'info'"
+                    [class.chip-warning]="row.level === 'warn'"
+                    [class.chip-error]="row.level === 'error'">
+                {{ row.level | uppercase }}
+              </span>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="message">
+            <mat-header-cell *matHeaderCellDef>Mensagem</mat-header-cell>
+            <mat-cell *matCellDef="let row" class="message-cell">{{ row.message }}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.status ?? '—' }}</mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="rowClass(row)"></mat-row>
+        </mat-table>
+        <mat-paginator
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[10, 25, 50]"
+          [length]="totalCount"
+          [pageIndex]="pageIndex"
+          (page)="onPageChange($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

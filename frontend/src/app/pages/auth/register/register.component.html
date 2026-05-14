@@ -1,0 +1,68 @@
+<div class="register-screen">
+  <div class="cempa-card register-card">
+    <div class="logo-area">
+      <img src="assets/cempa_horizontal.png" alt="CEMPA Cerrado" height="44" />
+    </div>
+    <app-progress-stepper [steps]="steps" [currentStep]="0"></app-progress-stepper>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome Completo</mat-label>
+        <input matInput formControlName="fullName" />
+        <mat-error *ngIf="form.get('fullName')?.hasError('required')">Nome obrigatório</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>E-mail</mat-label>
+        <input matInput formControlName="email" type="email" />
+        <mat-error *ngIf="form.get('email')?.hasError('required')">E-mail obrigatório</mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">E-mail inválido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Número de Celular</mat-label>
+        <input matInput formControlName="phoneNumber" type="tel" />
+        <mat-error *ngIf="form.get('phoneNumber')?.hasError('required')">Celular obrigatório</mat-error>
+        <mat-error *ngIf="form.get('phoneNumber')?.hasError('pattern')">Formato inválido (11 dígitos sem espaços)</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="password" [type]="hideSenha ? 'password' : 'text'" />
+        <button mat-icon-button matSuffix type="button" (click)="hideSenha = !hideSenha">
+          <mat-icon>{{ hideSenha ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">Senha obrigatória</mat-error>
+        <mat-error *ngIf="form.get('password')?.hasError('minlength')">Mínimo 6 caracteres</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Confirme a Senha</mat-label>
+        <input matInput formControlName="confirmPassword" [type]="hideConfirmar ? 'password' : 'text'" />
+        <button mat-icon-button matSuffix type="button" (click)="hideConfirmar = !hideConfirmar">
+          <mat-icon>{{ hideConfirmar ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">Confirmação obrigatória</mat-error>
+        <mat-error *ngIf="form.errors?.['passwordMismatch']">Senhas não conferem</mat-error>
+      </mat-form-field>
+
+      <div class="lgpd-row">
+        <mat-checkbox formControlName="termsAccepted" color="primary">
+          Concordo com o tratamento dos meus dados pessoais para receber avisos meteorológicos, nos termos da LGPD.
+        </mat-checkbox>
+        <mat-error *ngIf="form.get('termsAccepted')?.touched && form.get('termsAccepted')?.invalid"
+                   class="lgpd-error">
+          Você deve aceitar os termos para continuar.
+        </mat-error>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit"
+              class="full-width submit-btn" [disabled]="form.invalid || isLoading">
+        <span *ngIf="!isLoading">Cadastrar</span>
+        <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+      </button>
+    </form>
+
+    <p class="login-link">Já tem uma conta? <a routerLink="/auth/login">Entrar</a></p>
+  </div>
+</div>

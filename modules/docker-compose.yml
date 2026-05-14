@@ -1,0 +1,118 @@
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cempa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-j5fwuyqnoe}
+      POSTGRES_DB: ${POSTGRES_DB:-sigedam}
+    volumes:
+      - sigedam_postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d:ro
+    networks:
+      - sigedam-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cempa -d sigedam"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:8-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - sigedam-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+  modulo_usuarios:
+    build: ./usuarios
+    container_name: modulo_usuarios
+    ports:
+      - "8002:8002"
+    environment:
+      QUARKUS_PROFILE: prod
+      TZ: America/Sao_Paulo
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-sigedam}
+      QUARKUS_DATASOURCE_USERNAME: ${POSTGRES_USER:-cempa}
+      QUARKUS_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-j5fwuyqnoe}
+      # E-mail: mock por padrão. Para SMTP real, no .env: QUARKUS_MAILER_MOCK=false e preencha SMTP_*.
+      QUARKUS_MAILER_MOCK: ${QUARKUS_MAILER_MOCK:-true}
+      MAIL_HOST: ${SMTP_HOST:-localhost}
+      MAIL_PORT: ${SMTP_PORT:-587}
+      MAIL_USERNAME: ${SMTP_EMAIL:-unused}
+      MAIL_PASSWORD: ${SMTP_PASSWORD:-unused}
+      MAIL_FROM: ${MAIL_FROM:-noreply@sigedam.ufg.br}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8002 && echo -e 'GET /q/health HTTP/1.0\\r\\nHost: localhost\\r\\n\\r\\n' >&3 && timeout 1 cat <&3 | grep -q 'UP'"]
+      interval: 5s
+      timeout: 10s
+      retries: 60
+      start_period: 60s
+    networks:
+      - sigedam-net
+
+  celery_worker:
+    build: ./etl
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-cempa}:${POSTGRES_PASSWORD:-j5fwuyqnoe}@db:5432/${POSTGRES_DB:-sigedam}
+    command: uv run celery --app main worker --beat --loglevel=info
+    networks:
+      - sigedam-net
+    volumes:
+      - ./etl/tmp:/app/tmp
+      - ./etl/logs:/app/logs
+
+  frontend:
+    build:
+      context: ../frontend
+      args:
+        BUILD_CONFIG: ${FRONTEND_BUILD_CONFIG:-development}
+    container_name: frontend
+    ports:
+      - "80:8080"
+    depends_on:
+      modulo_usuarios:
+        condition: service_healthy
+    networks:
+      - sigedam-net
+
+  notifications:
+    build: ./notifications
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-cempa}:${POSTGRES_PASSWORD:-j5fwuyqnoe}@db:5432/${POSTGRES_DB:-sigedam}
+      - REDIS_URL=redis://redis:6379/0
+    networks:
+      - sigedam-net
+
+networks:
+  sigedam-net:
+    driver: bridge
+
+volumes:
+  sigedam_postgres_data:

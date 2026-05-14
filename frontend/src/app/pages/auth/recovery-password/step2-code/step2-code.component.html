@@ -1,0 +1,19 @@
+<h2 class="step-title">Insira o código</h2>
+<p class="step-description">
+  Enviamos um código de 6 dígitos para <strong>{{ maskedEmail }}</strong>.
+  Ele expira em <strong>{{ countdownFormatted }}</strong>.
+</p>
+
+<mat-form-field appearance="outline" class="full-width">
+  <mat-label>Código de verificação</mat-label>
+  <input matInput [formControl]="codeControl" maxlength="6" placeholder="000000" />
+  <mat-error *ngIf="codeControl.hasError('required')">Código é obrigatório</mat-error>
+  <mat-error *ngIf="codeControl.hasError('pattern')">O código deve ter 6 dígitos</mat-error>
+</mat-form-field>
+
+<div class="actions">
+  <button mat-button (click)="back.emit()">Voltar</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isLoading || countdown === 0">
+    {{ isLoading ? 'Verificando...' : 'Verificar código' }}
+  </button>
+</div>

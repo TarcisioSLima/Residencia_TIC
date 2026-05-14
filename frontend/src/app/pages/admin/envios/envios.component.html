@@ -1,0 +1,92 @@
+<div class="admin-shell">
+  <app-sidebar></app-sidebar>
+  <div class="admin-main">
+    <div class="admin-content">
+      <section class="page-intro">
+        <div class="intro-text">
+          <h1>Historico de Envios</h1>
+          <p>Consulte os avisos enviados por canal, cidade e status com filtros rapidos e uma visao clara.</p>
+        </div>
+        <div class="intro-badge">
+          <span class="badge-label">Resultados</span>
+          <strong class="badge-value">{{ totalElements }}</strong>
+        </div>
+      </section>
+
+      <div class="table-card">
+        <div class="table-toolbar">
+          <span class="table-title">Histórico de Envios</span>
+          <span class="table-subtitle">Acompanhe destino, evento, canal e retorno de entrega.</span>
+        </div>
+        <div class="filter-bar">
+          <form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="filter-form">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+              <input matInput [matDatepicker]="pickerData" formControlName="data" placeholder="Data">
+              <mat-datepicker-toggle matIconSuffix [for]="pickerData"></mat-datepicker-toggle>
+              <mat-datepicker #pickerData></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+              <mat-select formControlName="evento" placeholder="Evento">
+                <mat-option value="">Todos</mat-option>
+                <mat-option *ngFor="let e of eventos" [value]="e.id">{{ e.nomeEvento }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+              <mat-select formControlName="cidade" placeholder="Cidade">
+                <mat-option value="">Todas</mat-option>
+                <mat-option *ngFor="let c of cidades" [value]="c.id">{{ c.nome }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="filter-actions">
+              <button type="submit" class="btn-primary">Filtrar</button>
+              <button type="button" class="btn-ghost" (click)="clearFilters()">Limpar</button>
+            </div>
+          </form>
+        </div>
+        <mat-table [dataSource]="dataSource" class="admin-table">
+          <ng-container matColumnDef="dataGeracaoAviso">
+            <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.dataGeracaoAviso | date:'dd/MM/yyyy' }}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="destinatario">
+            <mat-header-cell *matHeaderCellDef>Destinatário</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="user-cell">
+                <div class="user-name-cell">{{ row.nomeUsuarioDestinatario }}</div>
+                <div class="user-email">{{ row.emailUsuarioDestinatario }}</div>
+              </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="nomeEvento">
+            <mat-header-cell *matHeaderCellDef>Aviso</mat-header-cell>
+            <mat-cell *matCellDef="let row" class="capitalize">{{ row.nomeEvento }}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="nomeCidade">
+            <mat-header-cell *matHeaderCellDef>Cidade</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{ row.nomeCidade }}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="nomeCanal">
+            <mat-header-cell *matHeaderCellDef>Canal</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <span class="chip-base chip-info">{{ row.nomeCanal }}</span>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="nomeStatus">
+            <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <span class="chip-base"
+                    [class.chip-success]="row.nomeStatus === 'ENVIADO'"
+                    [class.chip-error]="row.nomeStatus === 'FALHA'"
+                    [class.chip-warning]="row.nomeStatus === 'PENDENTE'">
+                {{ row.nomeStatus }}
+              </span>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="[10,25,50]" [length]="totalElements" (page)="onPageChange($event)"></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

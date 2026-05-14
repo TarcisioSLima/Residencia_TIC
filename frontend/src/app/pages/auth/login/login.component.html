@@ -1,0 +1,41 @@
+<div class="login-screen">
+  <div class="cempa-card login-card">
+    <div class="logo-area">
+      <img src="assets/cempa_horizontal.png" alt="CEMPA Cerrado" height="48" />
+    </div>
+    <h1 class="title">Bem-vindo de volta</h1>
+    <p class="subtitle">Acesse sua conta CEMPA Cerrado</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>E-mail</mat-label>
+        <input matInput formControlName="username" type="email" />
+        <mat-error *ngIf="form.get('username')?.hasError('required')">E-mail obrigatório</mat-error>
+        <mat-error *ngIf="form.get('username')?.hasError('email')">E-mail inválido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" />
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">Senha obrigatória</mat-error>
+      </mat-form-field>
+
+      <div class="forgot-link">
+        <a routerLink="/auth/recovery-password">Esqueci minha senha</a>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit"
+              class="full-width submit-btn" [disabled]="isLoading || form.invalid">
+        <span *ngIf="!isLoading">Entrar</span>
+        <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+      </button>
+    </form>
+
+    <p class="register-link">
+      Não tem conta? <a routerLink="/auth/register">Cadastrar-se</a>
+    </p>
+  </div>
+</div>

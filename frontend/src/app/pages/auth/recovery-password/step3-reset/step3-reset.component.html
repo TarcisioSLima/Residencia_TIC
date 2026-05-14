@@ -1,0 +1,37 @@
+<ng-container *ngIf="!success; else successTpl">
+  <h2 class="step-title">Nova senha</h2>
+  <p class="step-description">
+    Escolha uma senha segura: mínimo 8 caracteres, com maiúsculas, minúsculas, número e caractere especial (&#64;$!%*?&amp;).
+  </p>
+
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nova senha</mat-label>
+      <input matInput type="password" formControlName="newPassword" />
+      <mat-error *ngIf="form.get('newPassword')?.hasError('required')">Senha é obrigatória</mat-error>
+      <mat-error *ngIf="form.get('newPassword')?.hasError('minlength')">Mínimo 8 caracteres</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Confirmar nova senha</mat-label>
+      <input matInput type="password" formControlName="confirmPassword" />
+      <mat-error *ngIf="form.hasError('passwordsMismatch') && form.get('confirmPassword')?.touched">
+        As senhas não coincidem
+      </mat-error>
+    </mat-form-field>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" type="button" class="full-width" (click)="onSubmit()" [disabled]="isLoading">
+        {{ isLoading ? 'Salvando...' : 'Redefinir senha' }}
+      </button>
+    </div>
+  </form>
+</ng-container>
+
+<ng-template #successTpl>
+  <div class="success-message">
+    <mat-icon color="primary">check_circle</mat-icon>
+    <h2>Senha redefinida com sucesso!</h2>
+    <p>Você será redirecionado para o login em instantes...</p>
+  </div>
+</ng-template>

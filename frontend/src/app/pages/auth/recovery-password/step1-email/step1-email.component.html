@@ -1,0 +1,19 @@
+<h2 class="step-title">Recuperar senha</h2>
+<p class="step-description">Informe seu e-mail cadastrado.</p>
+
+<mat-form-field appearance="outline" class="full-width">
+  <mat-label>E-mail</mat-label>
+  <input matInput type="email" [formControl]="emailControl" />
+  <mat-error *ngIf="emailControl.hasError('required')">E-mail é obrigatório</mat-error>
+  <mat-error *ngIf="emailControl.hasError('email')">E-mail inválido</mat-error>
+</mat-form-field>
+
+<div class="actions">
+  <button mat-raised-button color="primary" class="full-width" (click)="onSubmit()" [disabled]="isLoading">
+    {{ isLoading ? 'Enviando...' : 'Enviar código' }}
+  </button>
+</div>
+
+<div class="back-link">
+  <a routerLink="/auth/login">Voltar ao login</a>
+</div>

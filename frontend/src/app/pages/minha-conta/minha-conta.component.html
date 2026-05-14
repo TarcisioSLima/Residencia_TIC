@@ -1,0 +1,21 @@
+<div class="home-screen">
+  <header class="topbar">
+    <div class="topbar-logo"><img src="assets/cempa_horizontal.png" height="32" alt="CEMPA" /></div>
+    <div class="topbar-user">
+      <div class="avatar">{{ userName.charAt(0).toUpperCase() }}</div>
+      <button mat-button (click)="logout()">Sair</button>
+    </div>
+  </header>
+  <main class="content">
+    <h1 class="greeting">Olá, {{ userName }}</h1>
+    <p class="greeting-sub">Suas configurações de alerta</p>
+
+    <div class="config-card">
+      <div class="config-card-header">
+        <span class="config-card-title">Configurações de Alerta</span>
+        <button mat-stroked-button routerLink="/preferences/cities" class="edit-btn">Editar</button>
+      </div>
+      <p class="config-hint">Gerencie seus avisos climáticos.</p>
+    </div>
+  </main>
+</div>

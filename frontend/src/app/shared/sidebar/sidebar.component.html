@@ -1,0 +1,20 @@
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <img src="assets/cempa_horizontal.png" class="sidebar-logo-img" alt="CEMPA" />
+  </div>
+  <div class="nav-list">
+    <a *ngFor="let item of navItems"
+       [routerLink]="item.route"
+       class="nav-item"
+       [class.active]="isActive(item.route)">
+      <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+      {{ item.label }}
+    </a>
+  </div>
+  <div class="sidebar-bottom">
+    <button class="nav-item logout-btn" (click)="logout()">
+      <mat-icon class="nav-icon">logout</mat-icon>
+      Sair
+    </button>
+  </div>
+</nav>

@@ -1,0 +1,63 @@
+<div class="cities-screen">
+  <header class="topbar">
+    <div class="topbar-logo" routerLink="/minha-conta" style="cursor:pointer"><img src="assets/cempa_horizontal.png" height="32" alt="CEMPA" /></div>
+    <div class="topbar-user">
+      <div class="avatar">{{ userName.charAt(0).toUpperCase() }}</div>
+      <button mat-button (click)="logout()">Sair</button>
+    </div>
+  </header>
+  <div class="content">
+  <div class="cempa-card cities-card">
+    <app-progress-stepper [steps]="steps" [currentStep]="1"></app-progress-stepper>
+
+    <h2 class="page-title">Suas cidades</h2>
+    <p class="page-subtitle">Escolha onde monitorar eventos climáticos</p>
+
+    <form [formGroup]="preferencesForm" (ngSubmit)="onSubmit()">
+      <div class="search-group">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar cidade...</mat-label>
+          <input type="text" matInput [formControl]="citySearchCtrl" [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+              {{ city.nome }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="button" (click)="addCity()" [disabled]="!citySearchCtrl.value">
+          + Adicionar
+        </button>
+      </div>
+
+      <div class="city-list" formArrayName="selectedCities">
+        <div class="city-card" *ngFor="let cityCtrl of selectedCities.controls; let i = index" [formGroupName]="i">
+          <div class="city-header">
+            <div>
+              <div class="city-name">{{ cityCtrl.value.name }}</div>
+              <div class="city-meta">{{ getCheckedCount(cityCtrl) }} variáveis monitoradas</div>
+            </div>
+            <button mat-icon-button class="remove-btn" type="button" (click)="removeCity(i)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          <div class="event-grid" formGroupName="preferences">
+            <mat-checkbox color="primary" formControlName="humidity">Umidade</mat-checkbox>
+            <mat-checkbox color="primary" formControlName="temperature">Temperatura</mat-checkbox>
+            <mat-checkbox color="primary" formControlName="wind">Vento</mat-checkbox>
+            <mat-checkbox color="primary" formControlName="heavyRain">Chuva intensa</mat-checkbox>
+            <mat-checkbox color="primary" formControlName="heatIndex">Sensação Térmica</mat-checkbox>
+          </div>
+        </div>
+        <p *ngIf="selectedCities.length === 0" class="no-cities">Nenhuma cidade adicionada ainda.</p>
+      </div>
+
+      <div class="footer">
+        <span class="step-label">Etapa 2 de 3</span>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!canProceed">
+          Próxima etapa →
+        </button>
+      </div>
+    </form>
+  </div>
+  </div>
+</div>

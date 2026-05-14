@@ -1,0 +1,7 @@
+org\ufg\service\UsuarioServiceTest.class
+org\ufg\service\CidadeServiceTest.class
+org\ufg\service\EventoServiceTest.class
+org\ufg\service\EnvioServiceTest.class
+org\ufg\service\AvisoServiceTest.class
+org\ufg\service\PreferenciaServiceTest.class
+org\ufg\service\CanalServiceTest.class

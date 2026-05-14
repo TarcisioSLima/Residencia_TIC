@@ -1,0 +1,18 @@
+"""Constantes de domínio para application logs."""
+
+# Tarefas do pipeline (application_logs.task)
+TASK_NAME_ETL = "ETL:PIPELINE"
+TASK_NAME_DOWNLOAD_FILE = "ETL:DOWNLOAD_FILE"
+TASK_NAME_TRANSFORM = "ETL:TRANSFORM"
+TASK_NAME_ANALYZE = "ETL:ANALYZE"
+TASK_NAME_LOAD = "ETL:LOAD"
+TASK_NAME_DISPATCH = "ETL:DISPATCH"
+
+# Status de execução
+STATUS_STARTED = "STARTED"
+STATUS_IN_PROGRESS = "IN_PROGRESS"
+STATUS_SUCCESS = "SUCCESS"
+STATUS_ERROR = "ERROR"
+
+# Infraestrutura
+REDIS_NOTIFICATIONS_QUEUE = "etl:notifications:ready"

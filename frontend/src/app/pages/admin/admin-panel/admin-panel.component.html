@@ -1,0 +1,92 @@
+<div class="admin-shell">
+  <app-sidebar></app-sidebar>
+  <div class="admin-main">
+    <div class="admin-content">
+      <section class="page-intro">
+        <div class="intro-text">
+          <h1>Painel Administrativo</h1>
+          <p>Acompanhe os avisos gerados e aplique filtros para encontrar informacoes rapidamente.</p>
+        </div>
+        <div class="intro-actions">
+          <button
+            class="btn-resend"
+            [disabled]="isSending"
+            (click)="openForceResendDialog()"
+          >
+            <mat-icon>send</mat-icon>
+            {{ isSending ? 'Enviando...' : 'Reenviar alertas de hoje' }}
+          </button>
+          <div class="intro-badge">
+            <span class="badge-label">Resultados</span>
+            <strong class="badge-value">{{ totalElements }}</strong>
+          </div>
+        </div>
+      </section>
+
+      <div class="table-card">
+        <div class="table-toolbar">
+          <span class="table-title">Lista de Avisos</span>
+          <span class="table-subtitle">Visao geral com data, evento, cidade e valor.</span>
+        </div>
+        <div class="filter-bar">
+          <form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="filter-form">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+              <input matInput [matDatepicker]="pickerData" formControlName="data" placeholder="Data">
+              <mat-datepicker-toggle matIconSuffix [for]="pickerData"></mat-datepicker-toggle>
+              <mat-datepicker #pickerData></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+              <mat-select formControlName="evento" placeholder="Evento">
+                <mat-option value="">Todos</mat-option>
+                <mat-option *ngFor="let e of eventos" [value]="e.id">{{ e.nomeEvento }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+              <mat-select formControlName="cidade" placeholder="Cidade">
+                <mat-option value="">Todas</mat-option>
+                <mat-option *ngFor="let c of cidades" [value]="c.id">{{ c.nome }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="filter-actions">
+              <button type="submit" class="btn-primary">Filtrar</button>
+              <button type="button" class="btn-ghost" (click)="clearFilters()">Limpar</button>
+            </div>
+          </form>
+        </div>
+        <ng-container *ngIf="avisos && avisos.length > 0; else noData">
+          <mat-table [dataSource]="avisos" class="admin-table">
+            <ng-container matColumnDef="nomeEvento">
+              <mat-header-cell *matHeaderCellDef>Evento</mat-header-cell>
+              <mat-cell *matCellDef="let row" class="capitalize">{{ row.nomeEvento }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nomeCidade">
+              <mat-header-cell *matHeaderCellDef>Cidade</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.nomeCidade }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="valor">
+              <mat-header-cell *matHeaderCellDef>Valor</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.valor }} {{ row.unidadeMedida }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="dataReferencia">
+              <mat-header-cell *matHeaderCellDef>Data Ref.</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.dataReferencia | date:'dd/MM/yyyy' }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="dataGeracao">
+              <mat-header-cell *matHeaderCellDef>Gerado em</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.dataGeracao | date:'dd/MM/yyyy' }}</mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="[10,25,50]" [length]="totalElements" (page)="onPageChange($event)"></mat-paginator>
+        </ng-container>
+        <ng-template #noData>
+          <div class="empty-state">
+            <mat-icon class="empty-icon">search_off</mat-icon>
+            <p>Nenhum aviso encontrado.</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,251 @@
+@use '@angular/material' as mat;
+@use 'styles/tokens';
+
+@include mat.core();
+
+$cempa-primary-palette: (
+  50:  #FFF8F0, 100: #FEE8CC, 200: #FDD4A0, 300: #FBB96A,
+  400: #F99A3E, 500: #E07B1A, 600: #C96E15, 700: #B5600F,
+  800: #924D0B, 900: #6F3A07,
+  contrast: (
+    50: rgba(black, 0.87), 100: rgba(black, 0.87),
+    200: rgba(black, 0.87), 300: rgba(black, 0.87),
+    400: white, 500: white, 600: white,
+    700: white, 800: white, 900: white,
+  )
+);
+
+$cempa-accent-palette: (
+  50:  #E8F5E9, 100: #C8E6C9, 200: #A5D6A7, 300: #81C784,
+  400: #66BB6A, 500: #2F7C31, 600: #2A6E2B, 700: #1B4D1E,
+  800: #1A3D1B, 900: #12301A,
+  contrast: (
+    50: rgba(black, 0.87), 100: rgba(black, 0.87),
+    200: rgba(black, 0.87), 300: rgba(black, 0.87),
+    400: white, 500: white, 600: white,
+    700: white, 800: white, 900: white,
+  )
+);
+
+$cempa-primary: mat.m2-define-palette($cempa-primary-palette, 500, 300, 700);
+$cempa-accent:  mat.m2-define-palette($cempa-accent-palette, 500, 300, 700);
+$cempa-warn:    mat.m2-define-palette(mat.$m2-red-palette);
+
+$cempa-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $cempa-primary,
+    accent:  $cempa-accent,
+    warn:    $cempa-warn,
+  ),
+  typography: mat.m2-define-typography-config(
+    $font-family: '"Outfit", system-ui, sans-serif',
+  ),
+  density: 0,
+));
+
+@include mat.all-component-themes($cempa-theme);
+
+html, body { height: 100%; overscroll-behavior: none; }
+body {
+  margin: 0;
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 { margin: 0; line-height: var(--leading-tight); font-weight: var(--font-bold); }
+p { margin: 0; line-height: var(--leading-normal); }
+
+.cempa-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+}
+
+// ─── Status Chips ─────────────────────────────────────────────────────────────
+.chip-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+}
+
+.chip-success { background: var(--color-success-bg); color: var(--color-success-text); }
+.chip-error   { background: var(--color-error-bg);   color: var(--color-error-text);   }
+.chip-warning { background: var(--color-warning-bg); color: var(--color-warning-text); }
+.chip-info    { background: var(--color-info-bg);    color: var(--color-info-text);    }
+
+// ─── Admin table ─────────────────────────────────────────────────────────────
+.admin-table {
+  width: 100%;
+
+  .mat-mdc-header-row, mat-header-row {
+    background: var(--color-bg);
+    min-height: 40px;
+  }
+
+  .mat-mdc-header-cell, mat-header-cell {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 16px;
+  }
+
+  .mat-mdc-row, mat-row {
+    min-height: 52px;
+    transition: background 0.1s;
+
+    &:hover { background: #F8FAFC; }
+
+    &:last-child {
+      .mat-mdc-cell, mat-cell { border-bottom: none; }
+    }
+  }
+
+  .mat-mdc-cell, mat-cell {
+    font-size: 13.5px;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 16px;
+  }
+}
+
+// ─── Material: form field (outline) global ────────────────────────────────────
+.mat-mdc-form-field {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: var(--color-border) !important;
+  }
+  .mdc-notched-outline__leading  { border-radius: var(--radius-md) 0 0 var(--radius-md); }
+  .mdc-notched-outline__trailing { border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+
+  &:hover:not(.mat-focused) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing { border-color: var(--color-text-secondary) !important; }
+  }
+
+  &.mat-focused {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: var(--color-primary) !important;
+      border-width: 1.5px !important;
+    }
+  }
+}
+
+// ─── Material: filter field compact ──────────────────────────────────────────
+.filter-field.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper { padding: 0 12px; }
+
+  .mat-mdc-form-field-infix {
+    min-height: 0 !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing { border-width: 1px !important; }
+
+  .mat-mdc-floating-label     { font-size: 12px; color: var(--color-text-secondary); }
+  .mat-mdc-input-element      { font-size: 12px; color: var(--color-text-primary); }
+  .mat-mdc-select-value       { font-size: 12px; color: var(--color-text-primary); }
+  .mat-mdc-select-placeholder { font-size: 12px; color: var(--color-text-muted); }
+
+  .mat-mdc-icon-button.mat-mdc-button-base {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    color: var(--color-text-muted);
+  }
+
+  .mat-mdc-form-field-subscript-wrapper { display: none; }
+  .mat-mdc-select-arrow { color: var(--color-text-muted); }
+}
+
+// ─── Admin: filter field focus/color tokens ──────────────────────────────────
+.admin-shell .filter-field {
+  --mdc-outlined-text-field-container-shape: 8px;
+  --mdc-outlined-text-field-outline-color: #E2E8F0;
+  --mdc-outlined-text-field-hover-outline-color: #CBD5E1;
+  --mdc-outlined-text-field-focus-outline-color: #E07B1A;
+  --mdc-outlined-text-field-focus-label-text-color: #B5600F;
+  --mdc-outlined-text-field-label-text-color: #64748B;
+  --mdc-outlined-text-field-input-text-color: #0F172A;
+  --mdc-outlined-text-field-caret-color: #E07B1A;
+}
+
+// ─── Material: select panel ───────────────────────────────────────────────────
+.mat-mdc-select-panel {
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+  border: 1px solid var(--color-border);
+  padding: 4px 0 !important;
+
+  .mat-mdc-option {
+    font-size: 13px;
+    min-height: 36px;
+    color: var(--color-text-primary);
+    &.mdc-list-item--selected:not(.mdc-list-item--disabled) { color: var(--color-primary); }
+  }
+}
+
+// ─── Material: datepicker ────────────────────────────────────────────────────
+.mat-datepicker-content {
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+  border: 1px solid var(--color-border);
+}
+
+// ─── Material: paginator (admin context) ─────────────────────────────────────
+.admin-shell .mat-mdc-paginator {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+
+  .mat-mdc-paginator-container {
+    min-height: 48px;
+    padding: 0 16px;
+    gap: 8px;
+  }
+
+  .mat-mdc-paginator-range-label,
+  .mat-mdc-paginator-page-size-label {
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+
+  .mat-mdc-select-value { font-size: 12px; }
+
+  .mat-mdc-icon-button {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    color: var(--color-text-secondary);
+  }
+}
